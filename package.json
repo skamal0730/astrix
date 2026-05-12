@@ -1,0 +1,41 @@
+{
+  "name": "xyther",
+  "version": "1.0.0",
+  "description": "Xyther intent-based trading MVP on Hedera",
+  "main": "relay/createTopicAndPublishIntent.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "concurrently -n backend,web,solver -c cyan,magenta,yellow \"npm run backend:start\" \"npm run web:dev\" \"npm run solver:start\"",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build",
+    "web:start": "npm --prefix web run start",
+    "relay:create-topic": "node relay/createTopicAndPublishIntent.js create-topic",
+    "relay:publish-intent": "node relay/createTopicAndPublishIntent.js publish-intent",
+    "solver:start": "node solver/solver.js",
+    "backend:start": "node backend/server.js",
+    "format": "prettier --write \"**/*.{json,md,js,sol,toml}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-skamal0730:skamal0730/xyther"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.81.0",
+    "@openzeppelin/contracts": "^5.6.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.16.0",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.8.3"
+  }
+}

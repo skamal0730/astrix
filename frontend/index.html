@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xyther - Intent Trading on Hedera</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <p class="badge">Hedera Testnet MVP</p>
+        <h1>Xyther: Intent-Based Trading Infrastructure</h1>
+        <p class="subtitle">
+          Users sign declarative intents. Solvers compete to execute best routes. Settlement is
+          verifiable on-chain.
+        </p>
+        <div class="hero-actions">
+          <a href="#demo" class="button">Open Live Demo</a>
+          <a href="#investor" class="button ghost">Investor Snapshot</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="cards">
+        <article class="card">
+          <h3>Problem</h3>
+          <p>
+            Traditional swaps force users to accept immediate execution and visible slippage
+            conditions. This creates poor UX in volatile markets.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Solution</h3>
+          <p>
+            Xyther lets users express trading outcomes as intents and delegates execution to solver
+            agents through an HCS-based broadcast layer.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Why Hedera</h3>
+          <p>
+            Fast finality, low fees, and predictable consensus ordering via HCS make intent
+            relaying and solver competition practical for retail and API users.
+          </p>
+        </article>
+      </section>
+
+      <section id="investor" class="grid-two">
+        <article class="card">
+          <h2>Investor Snapshot</h2>
+          <ul>
+            <li>Market: intent-based DeFi execution infra for Hedera.</li>
+            <li>MVP status: contract + relay + solver + UI live on testnet.</li>
+            <li>Moat: solver network effects + execution quality data.</li>
+            <li>Expansion: multi-pair routing, competitive auctions, API SDK.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Roadmap</h2>
+          <ul>
+            <li>Q2: Stable WHBAR/USDC flow and signed intent tooling.</li>
+            <li>Q3: Solver marketplace rules and score-based settlement.</li>
+            <li>Q4: Cross-venue execution and partner integrations.</li>
+            <li>Next: production hardening, monitoring, and audits.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section id="demo" class="card">
+        <div class="row">
+          <h2>MVP Demo Console</h2>
+          <button id="create-topic" class="button small">Create New HCS Topic</button>
+        </div>
+        <p class="muted">
+          This demo sends intents to your configured backend. Keep operator and submit keys on the
+          server only.
+        </p>
+
+        <form id="intent-form">
+          <label>Intent ID <input name="intentId" value="1" required /></label>
+          <label>Signer <input name="signer" placeholder="0x..." required /></label>
+          <label>Receiver <input name="receiver" placeholder="0x..." required /></label>
+          <label>Nonce <input name="nonce" value="1" required /></label>
+          <label>Token In (WHBAR) <input name="tokenIn" placeholder="0x..." required /></label>
+          <label>Token Out (USDC) <input name="tokenOut" placeholder="0x..." required /></label>
+          <label>Amount In <input name="amountIn" value="1000" required /></label>
+          <label>Min Amount Out <input name="minAmountOut" value="900" required /></label>
+          <label>Deadline (unix) <input name="deadline" value="1893456000" required /></label>
+          <label>Chain ID <input name="chainId" value="296" required /></label>
+          <label class="full">Signature <input name="signature" placeholder="0x..." required /></label>
+          <button class="button full" type="submit">Broadcast Intent to HCS</button>
+        </form>
+
+        <h3>API Response</h3>
+        <pre id="output"></pre>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
