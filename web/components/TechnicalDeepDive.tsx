@@ -6,7 +6,7 @@ const columns = [
   {
     id: "hcs",
     headline: "Fair-Ordered Mempool (HCS)",
-    body: "Xyther utilizes the Hedera Consensus Service to broadcast intents. Every trade request receives a verifiable, tamper-proof timestamp—reducing classic mempool leakage and strengthening MEV resistance before execution.",
+    body: "Astrix utilizes the Hedera Consensus Service to broadcast intents. Every trade request receives a verifiable, tamper-proof timestamp—reducing classic mempool leakage and strengthening MEV resistance before execution.",
   },
   {
     id: "solvers",

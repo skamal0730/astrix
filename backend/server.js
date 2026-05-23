@@ -72,7 +72,7 @@ app.get("/api/health", (_req, res) => {
 app.post("/api/hcs/create-topic", async (_req, res) => {
   try {
     const client = getClient();
-    let tx = new TopicCreateTransaction().setTopicMemo("Xyther intents");
+    let tx = new TopicCreateTransaction().setTopicMemo("Astrix intents");
     if (process.env.HCS_SUBMIT_KEY) {
       const submitKey = PrivateKey.fromString(process.env.HCS_SUBMIT_KEY);
       tx = tx.setSubmitKey(submitKey.publicKey);
@@ -255,5 +255,5 @@ app.get("/api/balances/:accountId", async (req, res) => {
 
 const port = Number(process.env.PORT || 3001);
 app.listen(port, () => {
-  console.log(`Xyther backend running on http://localhost:${port}`);
+  console.log(`Astrix backend running on http://localhost:${port}`);
 });

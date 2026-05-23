@@ -27,15 +27,15 @@ export function Navbar({ onConnectWallet, onDisconnect, walletAddress }: Props) 
         <a href="#swap" className="xy-navbar__brand">
           <span className="xy-logo-wrap xy-logo-wrap--nav">
             <img
-              src="/logo-xyther.png"
-              alt="Xyther"
+              src="/logo-astrix.png"
+              alt="Astrix"
               width={112}
               height={28}
-              className="logo-xyther logo-xyther--nav logo-round"
+              className="logo-astrix logo-astrix--nav logo-round"
               decoding="async"
             />
           </span>
-          <span className="xy-navbar__title">Xyther</span>
+          <span className="xy-navbar__title">Astrix</span>
         </a>
 
         <div className="xy-navbar__links">

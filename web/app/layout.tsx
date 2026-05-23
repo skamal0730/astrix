@@ -19,7 +19,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Xyther | Swap with Intent",
+  title: "Astrix | Swap with Intent",
   description:
     "The intent-centric execution layer on Hedera. Sign off-chain, settle on-chain—MEV-resistant ordering via HCS and atomic HTS settlement.",
 };

@@ -1,6 +1,6 @@
-# Xyther
+# Astrix
 
-Xyther is an intent-centric DeFi protocol on Hedera.  
+Astrix is an intent-centric DeFi protocol on Hedera.  
 This repository contains a production-ready web app foundation with:
 
 - Next.js 15 website (`web/`) with investor-grade UI and protocol playground.

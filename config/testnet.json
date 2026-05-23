@@ -15,8 +15,8 @@
       "evmAddress": "0x0000000000000000000000000000000000003ad2"
     },
     "usdc": {
-      "hederaId": "0.0.FILL_ME",
-      "evmAddress": "0x0000000000000000000000000000000000000000"
+      "hederaId": "0.0.429274",
+      "evmAddress": "0xc3ba8c19c1253c8ad43e1d3661a07efe41431ef4"
     }
   },
   "hederaSystemContracts": {

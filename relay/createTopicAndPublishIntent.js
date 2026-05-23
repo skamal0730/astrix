@@ -41,7 +41,7 @@ function createClientFromEnv() {
 async function createTopic() {
   const client = createClientFromEnv();
   const submitKeyRaw = process.env.HCS_SUBMIT_KEY;
-  let tx = new TopicCreateTransaction().setTopicMemo("Xyther intent relay topic");
+  let tx = new TopicCreateTransaction().setTopicMemo("Astrix intent relay topic");
 
   if (submitKeyRaw) {
     const submitKey = PrivateKey.fromString(submitKeyRaw);

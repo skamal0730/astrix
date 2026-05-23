@@ -197,7 +197,7 @@ export default function Home() {
     const signer = await provider.getSigner();
 
     const domain = {
-      name: "XytherIntentSettlement",
+      name: "AstrixIntentSettlement",
       version: "1",
       chainId: CHAIN_ID,
       verifyingContract: VERIFYING_CONTRACT,

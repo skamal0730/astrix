@@ -1,4 +1,4 @@
-const GITHUB_HREF = "https://github.com/skamal0730/xyther";
+const GITHUB_HREF = "https://github.com/skamal0730/astrix";
 
 export function Footer() {
   return (
@@ -7,11 +7,11 @@ export function Footer() {
         <a href="https://hedera.com" target="_blank" rel="noreferrer" className="xy-footer__badge">
           <span className="xy-logo-wrap xy-logo-wrap--sm">
             <img
-              src="/logo-xyther.png"
+              src="/logo-astrix.png"
               alt=""
               width={72}
               height={18}
-              className="logo-xyther logo-xyther--footer opacity-90"
+              className="logo-astrix logo-astrix--footer opacity-90"
               decoding="async"
             />
           </span>
@@ -36,7 +36,7 @@ export function Footer() {
         </div>
       </div>
       <p className="xy-footer__tagline">
-        Xyther — intent-centric execution on Hedera. MEV-resistant ordering via HCS; atomic settlement via HTS.
+        Astrix — intent-centric execution on Hedera. MEV-resistant ordering via HCS; atomic settlement via HTS.
       </p>
     </footer>
   );

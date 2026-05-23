@@ -1,4 +1,4 @@
-/* Xyther — Hedera-native Web3 UI: hashgraph navy depth + Hedera mint / emerald (not Solana purple-cyan-pink) */
+/* Astrix — Hedera-native Web3 UI: hashgraph navy depth + Hedera mint / emerald (not Solana purple-cyan-pink) */
 
 :root {
   --mesh-x: 50%;
@@ -276,7 +276,7 @@ body::before {
   padding: 1px;
 }
 
-.logo-xyther {
+.logo-astrix {
   display: block;
   object-fit: contain;
   object-position: left center;
@@ -285,14 +285,14 @@ body::before {
 }
 
 /* Nav: compact wordmark (~28px), width follows aspect ratio */
-.logo-xyther--nav {
+.logo-astrix--nav {
   height: 28px;
   width: auto;
   max-width: 112px;
   max-height: 28px;
 }
 
-.logo-xyther--footer {
+.logo-astrix--footer {
   height: 18px;
   width: auto;
   max-width: 72px;

@@ -61,7 +61,7 @@ export function PlaygroundPanel({
 
   return (
     <article id="swap" className="glass-strong xy-play xy-scroll-target">
-      <h2 className="xy-play__h2">Xyther Playground</h2>
+      <h2 className="xy-play__h2">Astrix Playground</h2>
       <p className="xy-play__sub">Sign an intent, broadcast to HCS, let solvers compete to fill.</p>
 
       <div className="xy-play__box">

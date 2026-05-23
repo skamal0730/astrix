@@ -60,7 +60,7 @@ contract IntentSettlement is EIP712 {
     );
 
     constructor(address router_, address whbar_, address usdc_, uint24 poolFee_)
-        EIP712("XytherIntentSettlement", "1")
+        EIP712("AstrixIntentSettlement", "1")
     {
         router = router_;
         whbar = whbar_;
