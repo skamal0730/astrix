@@ -2,10 +2,6 @@
   "name": "astrix",
   "version": "1.0.0",
   "description": "Astrix intent-based trading MVP on Hedera",
-  "main": "relay/createTopicAndPublishIntent.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "dev": "concurrently -n backend,web,solver -c cyan,magenta,yellow \"npm run backend:start\" \"npm run web:dev\" \"npm run solver:start\"",
     "web:dev": "npm --prefix web run dev",

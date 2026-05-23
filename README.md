@@ -32,7 +32,7 @@ This repository contains a production-ready web app foundation with:
 cp .env.example .env
 ```
 
-Fill required values:
+Fill required secrets and deployment-specific values:
 
 - `HEDERA_OPERATOR_ID`
 - `HEDERA_OPERATOR_KEY`
@@ -41,9 +41,8 @@ Fill required values:
 - `HEDERA_RPC_URL`
 - `SOLVER_PRIVATE_KEY`
 - `SETTLEMENT_CONTRACT`
-- `WHBAR_TOKEN`
-- `USDC_TOKEN`
-- `ROUTER_ADDRESS`
+
+Token addresses, SaucerSwap router/quoter, pool fee, and Hedera token IDs default from **`config/testnet.json`** when not set in `.env`.
 
 ### Web env
 
@@ -109,11 +108,24 @@ forge script script/DeployIntentSettlement.s.sol:DeployIntentSettlement \
   --broadcast
 ```
 
-## Hedera testnet defaults used in UI
+## Hedera testnet defaults
+
+Shared config: [`config/testnet.json`](config/testnet.json) (loaded by backend, solver, relay, and web API routes).
 
 - Chain ID: `296`
 - WHBAR Token ID: `0.0.15058`
 - USDC Token ID: `0.0.429274`
+
+## Repo layout
+
+| Path | Purpose |
+|------|---------|
+| `web/` | Next.js app (primary UI) |
+| `backend/` | Express API (HCS broadcast, status, balances) |
+| `solver/` | HCS subscriber + on-chain settlement |
+| `relay/` | CLI for topic create / intent publish (ops) |
+| `contracts/` | Foundry settlement contract |
+| `config/` | Testnet addresses and limits |
 
 ## Notes
 

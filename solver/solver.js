@@ -3,6 +3,9 @@ require("dotenv").config();
 const { Client, TopicId, TopicMessageQuery } = require("@hashgraph/sdk");
 const { ethers } = require("ethers");
 const { z } = require("zod");
+const { testnetDefaults, requireEnv: cfgEnv } = require("../config/loadTestnet");
+
+const testnet = testnetDefaults();
 
 const solverIntentSchema = z.object({
   intentId: z.union([z.string(), z.number()]),
@@ -22,10 +25,8 @@ const settlementAbi = [
   "function settle((uint256 intentId,address signer,address tokenIn,address tokenOut,uint256 amountIn,uint256 minAmountOut,uint256 deadline,uint256 nonce,address receiver,uint256 chainId) intent, bytes signature, bytes path) external returns (uint256 amountOut)",
 ];
 
-function requireEnv(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing ${name}`);
-  return value;
+function requireEnv(name, fallback) {
+  return cfgEnv(name, fallback);
 }
 
 function computeProfitabilityBps(amountIn, minAmountOut) {
@@ -70,10 +71,10 @@ async function startSolver() {
   const rpcUrl = requireEnv("HEDERA_RPC_URL");
   const privateKey = requireEnv("SOLVER_PRIVATE_KEY");
   const settlementAddress = requireEnv("SETTLEMENT_CONTRACT");
-  const whbar = requireEnv("WHBAR_TOKEN");
-  const usdc = requireEnv("USDC_TOKEN");
-  const poolFee = Number(process.env.POOL_FEE || "3000");
-  const expectedChainId = BigInt(process.env.CHAIN_ID || "296");
+  const whbar = requireEnv("WHBAR_TOKEN", testnet.whbarEvm);
+  const usdc = requireEnv("USDC_TOKEN", testnet.usdcEvm);
+  const poolFee = Number(process.env.POOL_FEE || testnet.poolFee);
+  const expectedChainId = BigInt(process.env.CHAIN_ID || testnet.chainId);
   const minProfitBps = BigInt(process.env.MIN_PROFIT_BPS || "0");
 
   const provider = new ethers.JsonRpcProvider(rpcUrl);

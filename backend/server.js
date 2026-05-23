@@ -12,6 +12,10 @@ const {
   TopicMessageSubmitTransaction,
 } = require("@hashgraph/sdk");
 const { z } = require("zod");
+const { testnetDefaults, requireEnv: cfgEnv } = require("../config/loadTestnet");
+
+const testnet = testnetDefaults();
+const MAX_HCS_MESSAGE_BYTES = Number(process.env.MAX_HCS_MESSAGE_BYTES || testnet.maxHcsMessageBytes);
 
 const app = express();
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000,http://localhost:3001")
@@ -19,7 +23,6 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000,http:/
   .map((s) => s.trim());
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: "50kb" }));
-app.use(express.static("frontend"));
 
 const intentSchema = z.object({
   intentId: z.union([z.string(), z.number()]),
@@ -84,39 +87,6 @@ app.post("/api/hcs/create-topic", async (_req, res) => {
   }
 });
 
-app.post("/api/intents/publish", async (req, res) => {
-  try {
-    const client = getClient();
-    const topicId = process.env.HCS_TOPIC_ID;
-    if (!topicId) throw new Error("Set HCS_TOPIC_ID in .env");
-
-    const intent = intentSchema.parse(req.body);
-    const payload = JSON.stringify(intent);
-    if (Buffer.byteLength(payload, "utf8") > 1024) {
-      throw new Error("Intent payload exceeds 1024 bytes");
-    }
-
-    let tx = new TopicMessageSubmitTransaction()
-      .setTopicId(TopicId.fromString(topicId))
-      .setMessage(payload);
-
-    if (process.env.HCS_SUBMIT_KEY) {
-      tx = await tx.freezeWith(client);
-      tx = await tx.sign(PrivateKey.fromString(process.env.HCS_SUBMIT_KEY));
-    }
-
-    const submit = await tx.execute(client);
-    const receipt = await submit.getReceipt(client);
-    res.json({
-      status: String(receipt.status),
-      transactionId: submit.transactionId.toString(),
-      topicId,
-    });
-  } catch (err) {
-    res.status(400).json({ error: err.message || String(err) });
-  }
-});
-
 app.post("/api/broadcast", async (req, res) => {
   try {
     const client = getClient();
@@ -127,8 +97,8 @@ app.post("/api/broadcast", async (req, res) => {
     const intent = intentSchema.parse(payloadIn.intent || payloadIn);
     const requestId = payloadIn.requestId || `${intent.intentId}-${crypto.randomUUID()}`;
     const payload = JSON.stringify({ ...intent, requestId });
-    if (Buffer.byteLength(payload, "utf8") > 1024) {
-      throw new Error("Intent payload exceeds 1024 bytes");
+    if (Buffer.byteLength(payload, "utf8") > MAX_HCS_MESSAGE_BYTES) {
+      throw new Error(`Intent payload exceeds ${MAX_HCS_MESSAGE_BYTES} bytes`);
     }
 
     upsertStatus(requestId, {
@@ -229,7 +199,7 @@ app.post("/api/status/update", (req, res) => {
 app.get("/api/balances/:accountId", async (req, res) => {
   try {
     const accountId = req.params.accountId;
-    const usdcTokenId = process.env.USDC_TOKEN_ID || "0.0.429274";
+    const usdcTokenId = cfgEnv("USDC_TOKEN_ID", testnet.usdcHederaId);
     const mirrorBase = process.env.MIRROR_NODE_URL || "https://testnet.mirrornode.hedera.com/api/v1";
 
     const [hbarResp, tokenResp] = await Promise.all([

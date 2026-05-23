@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { NextResponse } from "next/server";
+import { getTestnetConfig } from "@/lib/testnet";
 
 const QUOTER_V2_ABI = [
   "function quoteExactInputSingle((address tokenIn,address tokenOut,uint256 amountIn,uint24 fee,uint160 sqrtPriceLimitX96)) external returns (uint256 amountOut,uint160 sqrtPriceX96After,uint32 initializedTicksCrossed,uint256 gasEstimate)",
@@ -11,18 +12,15 @@ export async function GET(request: Request) {
   const amountIn = searchParams.get("amountIn") || "10000000";
   const sellToken = (searchParams.get("sellToken") || "usdc").toLowerCase();
 
+  const testnet = getTestnetConfig();
   const rpc =
     process.env.HEDERA_RPC_URL ||
     process.env.NEXT_PUBLIC_HEDERA_RPC_URL ||
     "https://testnet.hashio.io/api";
-  const quoter =
-    process.env.SAUCERSWAP_QUOTER_V2 ||
-    "0x00000000000000000000000000000000001535b2";
-  const whbar =
-    process.env.NEXT_PUBLIC_WHBAR_EVM || "0x0000000000000000000000000000000000003ad1";
-  const usdc =
-    process.env.NEXT_PUBLIC_USDC_EVM || "0xc3ba8c19c1253c8ad43e1d3661a07efe41431ef4";
-  const fee = Number(process.env.POOL_FEE || 3000);
+  const quoter = process.env.SAUCERSWAP_QUOTER_V2 || testnet.saucerswap.quoter;
+  const whbar = process.env.NEXT_PUBLIC_WHBAR_EVM || testnet.tokens.whbar.evmAddress;
+  const usdc = process.env.NEXT_PUBLIC_USDC_EVM || testnet.tokens.usdc.evmAddress;
+  const fee = Number(process.env.POOL_FEE || testnet.saucerswap.poolFee);
 
   const usdcToWhbar = sellToken === "usdc";
 

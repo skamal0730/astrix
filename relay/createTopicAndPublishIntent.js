@@ -9,8 +9,11 @@ const {
   TopicMessageSubmitTransaction,
 } = require("@hashgraph/sdk");
 const { z } = require("zod");
+const { testnetDefaults } = require("../config/loadTestnet");
 
-const MAX_HCS_MESSAGE_BYTES = 1024;
+const MAX_HCS_MESSAGE_BYTES = Number(
+  process.env.MAX_HCS_MESSAGE_BYTES || testnetDefaults().maxHcsMessageBytes,
+);
 
 const intentSchema = z.object({
   intentId: z.union([z.string(), z.number()]),
