@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const http = require("http");
 const { Client, TopicId, TopicMessageQuery } = require("@hashgraph/sdk");
 const { ethers } = require("ethers");
 const { z } = require("zod");
@@ -50,6 +51,24 @@ function normalizeIntent(raw) {
     chainId: BigInt(parsed.chainId),
     signature: parsed.signature,
   };
+}
+
+/** Render Web Services require a bound port; the solver itself only subscribes to HCS. */
+function startHealthServer() {
+  const port = Number(process.env.PORT || 8080);
+  const server = http.createServer((req, res) => {
+    if (req.url === "/" || req.url === "/health" || req.url === "/api/health") {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ ok: true, service: "astrix-solver" }));
+      return;
+    }
+    res.writeHead(404, { "content-type": "application/json" });
+    res.end(JSON.stringify({ error: "not_found" }));
+  });
+  server.listen(port, "0.0.0.0", () => {
+    console.log(JSON.stringify({ action: "health-server-listening", port }));
+  });
+  return server;
 }
 
 async function pushStatus(requestId, patch) {
@@ -176,6 +195,8 @@ async function startSolver() {
       }
     });
 }
+
+startHealthServer();
 
 startSolver().catch((err) => {
   console.error(err.message || err);
