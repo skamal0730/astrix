@@ -24,6 +24,47 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000,http:/
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: "50kb" }));
 
+/** Wake Render free-tier solver (fire-and-forget). Set SOLVER_HEALTH_URL on backend only. */
+const SOLVER_WAKE_TIMEOUT_MS = Number(process.env.SOLVER_WAKE_TIMEOUT_MS || 2500);
+const SOLVER_WAKE_COOLDOWN_MS = Number(process.env.SOLVER_WAKE_COOLDOWN_MS || 60_000);
+let lastSolverWakeAt = 0;
+
+function solverHealthUrl() {
+  const raw = process.env.SOLVER_HEALTH_URL?.trim();
+  if (!raw) return null;
+  if (raw.endsWith("/health") || raw.endsWith("/api/health")) return raw;
+  return `${raw.replace(/\/$/, "")}/health`;
+}
+
+function wakeSolver() {
+  const url = solverHealthUrl();
+  if (!url) return;
+
+  const now = Date.now();
+  if (now - lastSolverWakeAt < SOLVER_WAKE_COOLDOWN_MS) return;
+  lastSolverWakeAt = now;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), SOLVER_WAKE_TIMEOUT_MS);
+  fetch(url, { method: "GET", signal: controller.signal })
+    .catch(() => {})
+    .finally(() => clearTimeout(timer));
+}
+
+function shouldWakeSolver(req) {
+  if (req.method === "POST" && req.path === "/api/status/update") return false;
+  if (req.path === "/api/broadcast") return true;
+  if (req.path === "/api/intents/recent") return true;
+  if (req.path.startsWith("/api/status/")) return true;
+  if (req.path.startsWith("/api/balances/")) return true;
+  return false;
+}
+
+app.use((req, _res, next) => {
+  if (shouldWakeSolver(req)) wakeSolver();
+  next();
+});
+
 const intentSchema = z.object({
   intentId: z.union([z.string(), z.number()]),
   signer: z.string(),

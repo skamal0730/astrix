@@ -127,6 +127,16 @@ Shared config: [`config/testnet.json`](config/testnet.json) (loaded by backend, 
 | `contracts/` | Foundry settlement contract |
 | `config/` | Testnet addresses and limits |
 
+## Render free tier: wake solver from backend
+
+Set on the **backend** service (not Vercel):
+
+```env
+SOLVER_HEALTH_URL=https://your-solver.onrender.com
+```
+
+When users broadcast, poll status, or load balances, the backend sends a short, fire-and-forget `GET` to `{SOLVER_HEALTH_URL}/health` (at most once per minute by default) so the solver process wakes without the frontend calling it directly.
+
 ## Notes
 
 - Keep operator and submit keys server-side only.
