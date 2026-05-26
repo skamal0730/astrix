@@ -1,0 +1,13 @@
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
+[build]
+  # Netlify should build the Next.js app (SSR + API routes).
+  command = "npm run build"
+  # Publish directory for the Next.js plugin (build output).
+  publish = ".next"
+
+[functions]
+  # With Base directory set to `web/`, this maps to `web/netlify/functions`.
+  directory = "netlify/functions"
+
